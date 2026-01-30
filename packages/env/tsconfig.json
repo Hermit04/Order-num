@@ -1,0 +1,3 @@
+{
+  "extends": "@Order-num/config/tsconfig.base.json"
+}
