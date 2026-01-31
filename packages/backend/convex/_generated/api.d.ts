@@ -9,9 +9,15 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as categories from "../categories.js";
 import type * as healthCheck from "../healthCheck.js";
 import type * as http from "../http.js";
 import type * as privateData from "../privateData.js";
+import type * as products from "../products.js";
+import type * as sales from "../sales.js";
+import type * as seed from "../seed.js";
+import type * as stores from "../stores.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -21,9 +27,15 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  categories: typeof categories;
   healthCheck: typeof healthCheck;
   http: typeof http;
   privateData: typeof privateData;
+  products: typeof products;
+  sales: typeof sales;
+  seed: typeof seed;
+  stores: typeof stores;
+  users: typeof users;
 }>;
 
 /**

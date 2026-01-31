@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@Order-num/config": "workspace:*",
+    "shadcn": "^3.8.1",
     "turbo": "^2.6.3",
     "typescript": "catalog:"
   },
