@@ -51,7 +51,7 @@ export const create = mutation({
     const saleId = await ctx.db.insert("sales", {
       ...args,
       saleNumber,
-      cashierId: user.id,
+      cashierId: user._id,
       status: "completed",
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -84,9 +84,9 @@ export const listByStore = query({
       .withIndex("by_store", (q) => q.eq("storeId", args.storeId))
       .order("desc");
 
-    if (args.limit) {
-      query = query.take(args.limit);
-    }
+    // if (args.limit) {
+    //   query = query.take(args.limit);
+    // }
 
     const sales = await query.collect();
     return sales;
