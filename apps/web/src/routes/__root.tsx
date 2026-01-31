@@ -8,6 +8,7 @@ import {
   Scripts,
   createRootRouteWithContext,
   useRouteContext,
+  useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { createServerFn } from "@tanstack/react-start";
@@ -65,21 +66,31 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 
 function RootDocument() {
   const context = useRouteContext({ from: Route.id });
+  const router = useRouterState();
+  const pathname = router.location.pathname;
+  
+  // Don't show header on dashboard or when unauthenticated
+  const showHeader = pathname === "/" && context.isAuthenticated;
+  
   return (
     <ConvexBetterAuthProvider
       client={context.convexQueryClient.convexClient}
       authClient={authClient}
       initialToken={context.token}
     >
-      <html lang="en" className="dark">
+      <html lang="en">
         <head>
           <HeadContent />
         </head>
         <body>
-          <div className="grid h-svh grid-rows-[auto_1fr]">
-            <Header />
+          {showHeader ? (
+            <div className="grid h-svh grid-rows-[auto_1fr]">
+              <Header />
+              <Outlet />
+            </div>
+          ) : (
             <Outlet />
-          </div>
+          )}
           <Toaster richColors />
           <TanStackRouterDevtools position="bottom-left" />
           <Scripts />
