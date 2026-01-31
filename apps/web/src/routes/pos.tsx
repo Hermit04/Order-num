@@ -2,7 +2,7 @@ import { api } from "@Order-num/backend/convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { Authenticated, AuthLoading, Unauthenticated, useQuery, useMutation } from "convex/react";
 import { Plus, Minus, Trash2, ShoppingCart, Barcode, CreditCard, DollarSign } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 import SignInForm from "@/components/sign-in-form";
@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { POS_CONFIG } from "@/lib/pos-config";
 
 export const Route = createFileRoute("/pos")({
   component: RouteComponent,
@@ -71,11 +72,11 @@ function POSContent() {
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "card" | "mobile" | "other">("cash");
 
   // Select first store by default
-  useState(() => {
+  useEffect(() => {
     if (stores && stores.length > 0 && !selectedStore) {
       setSelectedStore(stores[0]._id);
     }
-  });
+  }, [stores, selectedStore]);
 
   const filteredProducts = products?.filter(
     (p) =>
@@ -135,7 +136,7 @@ function POSContent() {
   };
 
   const subtotal = cart.reduce((sum, item) => sum + item.subtotal, 0);
-  const tax = subtotal * 0.1; // 10% tax
+  const tax = subtotal * POS_CONFIG.DEFAULT_TAX_RATE;
   const total = subtotal + tax;
 
   const handleCheckout = async () => {
@@ -310,7 +311,7 @@ function POSContent() {
                         <span>${subtotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Tax (10%):</span>
+                        <span>Tax ({(POS_CONFIG.DEFAULT_TAX_RATE * 100).toFixed(0)}%):</span>
                         <span>${tax.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between font-bold text-lg">

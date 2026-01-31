@@ -2,7 +2,7 @@ import { api } from "@Order-num/backend/convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { Authenticated, AuthLoading, Unauthenticated, useQuery } from "convex/react";
 import { TrendingUp, DollarSign, ShoppingCart, RefreshCw } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
@@ -59,11 +59,11 @@ function ReportsContent() {
   );
 
   // Select first store by default
-  useState(() => {
+  useEffect(() => {
     if (stores && stores.length > 0 && !selectedStore) {
       setSelectedStore(stores[0]._id);
     }
-  });
+  }, [stores, selectedStore]);
 
   return (
     <div className="container mx-auto p-6">

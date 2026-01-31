@@ -2,6 +2,9 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { authComponent } from "./auth";
 
+// Constants
+const SUBSCRIPTION_DURATION_DAYS = 30;
+
 // Create a new store (admin only)
 export const create = mutation({
   args: {
@@ -17,8 +20,8 @@ export const create = mutation({
     const user = await authComponent.getAuthUser(ctx);
     if (!user) throw new Error("Unauthorized");
 
-    // Calculate subscription expiry (30 days from now)
-    const expiresAt = Date.now() + 30 * 24 * 60 * 60 * 1000;
+    // Calculate subscription expiry
+    const expiresAt = Date.now() + SUBSCRIPTION_DURATION_DAYS * 24 * 60 * 60 * 1000;
 
     const storeId = await ctx.db.insert("stores", {
       name: args.name,

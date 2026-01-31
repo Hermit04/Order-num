@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Authenticated, AuthLoading, Unauthenticated, useQuery, useMutation } from "convex/react";
 import { Plus, Edit, Trash2, Package, AlertTriangle } from "lucide-react";
 import { useState } from "react";
+import * as React from "react";
 import { toast } from "sonner";
 
 import SignInForm from "@/components/sign-in-form";
@@ -79,11 +80,11 @@ function InventoryContent() {
   });
 
   // Select first store by default
-  useState(() => {
+  React.useEffect(() => {
     if (stores && stores.length > 0 && !selectedStore) {
       setSelectedStore(stores[0]._id);
     }
-  });
+  }, [stores, selectedStore]);
 
   const handleCreate = async () => {
     if (!selectedStore) return;

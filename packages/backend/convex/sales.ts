@@ -30,9 +30,22 @@ export const create = mutation({
     const user = await authComponent.getAuthUser(ctx);
     if (!user) throw new Error("Unauthorized");
 
-    // Generate sale number
-    const count = await ctx.db.query("sales").collect();
-    const saleNumber = `SALE-${String(count.length + 1).padStart(6, "0")}`;
+    // Validate stock availability
+    for (const item of args.items) {
+      const product = await ctx.db.get(item.productId);
+      if (!product) {
+        throw new Error(`Product ${item.productName} not found`);
+      }
+      if (product.quantity < item.quantity) {
+        throw new Error(
+          `Insufficient stock for ${item.productName}. Available: ${product.quantity}, Required: ${item.quantity}`
+        );
+      }
+    }
+
+    // Generate sale number using timestamp to avoid collisions
+    const timestamp = Date.now();
+    const saleNumber = `SALE-${timestamp.toString().slice(-10)}`;
 
     // Create the sale
     const saleId = await ctx.db.insert("sales", {
