@@ -77,7 +77,7 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
                         <Input
                           id={field.name}
                           name={field.name}
-                          placeholder="John Doe"
+                          placeholder="Enter your name"
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
